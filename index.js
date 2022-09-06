@@ -1,19 +1,16 @@
-const Discord = require('discord.js');
-const Token = ''; //You Bot Token here
-const Client = new Discord.Client();
- 
-const prefix = "!"; //You Custom Prefix here
- 
- 
-Client.on("ready", () =>{
-    console.log(`Bot is Online`)
-    Client.user.setPresence({
-        status: "dnd",  // online, idle, dnd : it is only updated when the bot restarts full
-        game: {
-            name: "!help",  // The message shown
-            type: "LISTENING" // PLAYING, WATCHING, LISTENING, STREAMING,
-        }
-    });
- }); 
- 
-Client.login(Token)
+const { Client, GatewayIntentBits, Collection, ActivityType } = require("discord.js");
+const { token } = require("./config.json");
+const client = new Client({
+    allowedMentions: { parse: [ "users", "roles" ]},
+    intents: [ GatewayIntentBits.Guilds ]
+});
+
+client.on("ready", (client) => {
+    console.log(`Logged in as ${client.user.tag}!`);
+    client.user.setPresence({
+        activities: [{ name: `Your Activity here`, type: ActivityType.Listening }],
+        status: 'idle',
+      });
+});
+
+client.login(token);
